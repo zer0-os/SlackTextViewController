@@ -441,11 +441,15 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     if (self.isTypingSuggestionEnabled == enabled) {
         return;
     }
-    
+
     self.autocorrectionType = enabled ? UITextAutocorrectionTypeDefault : UITextAutocorrectionTypeNo;
     self.spellCheckingType = enabled ? UITextSpellCheckingTypeDefault : UITextSpellCheckingTypeNo;
-    
-    [self refreshFirstResponder];
+
+    if (@available(iOS 16.0, *)) {
+        [self refreshInputViews];
+    } else {
+        [self refreshFirstResponder];
+    }
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset
